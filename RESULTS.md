@@ -3,3 +3,4 @@
 ## Part 0
 
 - Step 0.1, `http_req_duration`: 286.82 ms (one request; avg, min, med, max, p(90), and p(95) are equal). The status 200 check passed (1/1), and `http_req_failed` was 0%.
+- Step 0.2, 5 VUs for 20 seconds: 80 HTTP requests, 3.787753 requests/second, and `http_req_duration` p(95) of 331.69 ms. All 80 checks passed, with 0% failed requests. The request rate stayed below 5/second because each user waits for the HTTP response and then sleeps for 1 second before starting the next iteration; one user cannot make one request every second.
