@@ -16,3 +16,6 @@
 | Step | Test type | Users | Req/s | p(95) | Max | Failed | Checks |
 | ---- | --------- | ----- | ----- | ----- | --- | ------ | ------ |
 | A1 | Smoke | 1 | 0.545477 | 359.51 ms | 368.73 ms | 0% | 100% (24/24) |
+| A2 | Average load | 3 | 1.308686 | 376.95 ms | 420.84 ms | 0.41% (1/243) | 99.38% (322/324) |
+
+Step A2: All thresholds passed, including home p(95) 313.19 ms and recommendation p(95) 394.9 ms. One recommendation request did not return 200 and had no pizza name, causing two failed checks. The HTML dashboard is in `reports/a2-average.html`.
