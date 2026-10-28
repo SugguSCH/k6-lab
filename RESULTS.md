@@ -17,5 +17,8 @@
 | ---- | --------- | ----- | ----- | ----- | --- | ------ | ------ |
 | A1 | Smoke | 1 | 0.545477 | 359.51 ms | 368.73 ms | 0% | 100% (24/24) |
 | A2 | Average load | 3 | 1.308686 | 376.95 ms | 420.84 ms | 0.41% (1/243) | 99.38% (322/324) |
+| A3 | Stress | 5 | 2.17773 | 369.3 ms | 442.94 ms | 0% (0/408) | 100% (544/544) |
 
 Step A2: All thresholds passed, including home p(95) 313.19 ms and recommendation p(95) 394.9 ms. One recommendation request did not return 200 and had no pizza name, causing two failed checks. The HTML dashboard is in `reports/a2-average.html`.
+
+Step A3: All thresholds passed, including home p(95) 314.05 ms and recommendation p(95) 403.76 ms. Overall p(95) was 369.3 ms, 7.65 ms lower than A2's 376.95 ms, despite the higher request rate. The small difference in these separate runs does not show a clear slowdown at 5 VUs. The HTML dashboard is in `reports/a3-stress.html`.
