@@ -28,3 +28,15 @@ Step A3: All thresholds passed, including home p(95) 314.05 ms and recommendatio
 Step A4: All thresholds passed, and no requests or checks failed. The spike began at 30 seconds, reached 5 VUs at 35 seconds, and returned to 1 VU at 70 seconds. In the dashboard's 10-second windows, overall p(95) was about 305-355 ms before the spike, around 355-370 ms while at 5 VUs, and about 405 ms in the 70-80 second window. It was 304 ms in the 80-90 second window, so the response time returned to its earlier range within about 20 seconds after the drop to 1 VU. These short-window values vary, so this is an approximate recovery time. The HTML dashboard is in `reports/a4-spike.html`.
 
 Step A5: All thresholds passed. The run completed 212 journeys, 636 requests, and 848 checks with no failed requests or checks. For a like-for-like comparison at 2 VUs, the mean of the dashboard's 10-second p(95) values was 368.28 ms in the early 30-150 second interval and 372.14 ms in the late 510-630 second interval. This 3.86 ms difference is small, with no clear degradation over the 10-minute hold and no increase in the error rate. The HTML dashboard is in `reports/a5-soak.html`.
+
+## Part B
+
+1. ผล A1-A5 อยู่ในตารางข้างบนเลย มีทั้งจำนวน users, Req/s, p(95), Max, อัตราคำขอล้มเหลว และ checks จากการรันจริง
+2. Step 0.2 ใช้ 5 users แต่ได้แค่ 3.787753 requests/s เพราะแต่ละคนต้องรอเว็บตอบก่อน แล้ว `sleep(1)` อีก 1 วินาที ถึงจะเริ่มรอบใหม่ได้ เลยส่งได้ไม่ถึงคนละ 1 request/s
+3. รอบ stress ไม่ได้ช้าลงชัดเจน p(95) ของ A2 คือ 376.95 ms ส่วน A3 คือ 369.3 ms (ต่ำกว่า 7.65 ms) โหลดระดับ 5 users น่าจะยังอยู่ในช่วงที่ระบบรับไหว แต่เป็นเว็บสาธารณะและรันคนละเวลา เลยเอาความต่างเล็กน้อยนี้ไปฟันธงเรื่องขีดจำกัดจริงของระบบไม่ได้
+4. หลัง spike ลดกลับมา 1 user ที่ประมาณวินาที 70 ค่า p(95) ช่วงวินาที 70-80 ยังสูงราว 405 ms แต่ช่วง 80-90 ลดเหลือราว 304 ms ใกล้ก่อน spike แล้ว เลยประเมินว่ากลับมาปกติภายในประมาณ 20 วินาที
+5. รอบ soak ไม่เห็นว่าแย่ลงชัดเจน ค่าเฉลี่ย p(95) จากช่วงต้นกับท้ายที่โหลด 2 users คือ 368.28 กับ 372.14 ms ต่างกัน 3.86 ms และคำขอล้มเหลว 0/636 ถ้ารันหลายชั่วโมงอาจเจอ memory leak ที่ค่อย ๆ กินแรมจนตอบช้าหรือล่มได้
+6. ใช้ p(95) เพราะมันบอกว่าคำขอ 95% เสร็จภายในกี่ ms ทำให้เห็นกลุ่มที่ช้ากว่าคนส่วนใหญ่ ค่าเฉลี่ยอย่างเดียวอาจกลบประสบการณ์ของคนที่เจอคำขอช้า
+7. ตัวเลขในแล็บอาจต่างจากการยิงระบบในห้องแล็บ เพราะ (1) ระยะทางและความหน่วงของอินเทอร์เน็ตต่างกัน และ (2) QuickPizza เป็นเว็บที่คนอื่นใช้ร่วมกัน โหลดจากคนอื่นเปลี่ยนได้ตลอด
+8. การยิง stress, spike หรือ breakpoint หลายร้อย users ใส่เว็บที่เราไม่ได้เป็นเจ้าของอาจทำให้เว็บช้าหรือล่ม กระทบผู้ใช้จริง และเราไม่ได้รับอนุญาตให้สร้างโหลดระดับนั้น
+9. ตัวอย่างแอปสั่งอาหารที่ใช้ประจำ: ข้อกำหนดกว้าง ๆ คือ "หน้าแรกต้องโหลดเร็ว" ถ้าจะวัดจริง ขอเป็น "เมื่อมี 3 users เปิดหน้าแรกพร้อมกันนาน 30 วินาที 95% ของคำขอต้องเสร็จภายใน 1 วินาที 99% ภายใน 1.5 วินาที และคำขอล้มเหลวต่ำกว่า 1%" โดยตั้ง `vus: 3`, `duration: '30s'` และ thresholds เป็น `http_req_duration: ['p(95)<1000', 'p(99)<1500']`, `http_req_failed: ['rate<0.01']`
