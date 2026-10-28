@@ -19,9 +19,12 @@
 | A2 | Average load | 3 | 1.308686 | 376.95 ms | 420.84 ms | 0.41% (1/243) | 99.38% (322/324) |
 | A3 | Stress | 5 | 2.17773 | 369.3 ms | 442.94 ms | 0% (0/408) | 100% (544/544) |
 | A4 | Spike | 5 | 1.039496 | 369.7 ms | 447.54 ms | 0% (0/150) | 100% (200/200) |
+| A5 | Soak | 2 | 0.96244 | 384.9 ms | 458.32 ms | 0% (0/636) | 100% (848/848) |
 
 Step A2: All thresholds passed, including home p(95) 313.19 ms and recommendation p(95) 394.9 ms. One recommendation request did not return 200 and had no pizza name, causing two failed checks. The HTML dashboard is in `reports/a2-average.html`.
 
 Step A3: All thresholds passed, including home p(95) 314.05 ms and recommendation p(95) 403.76 ms. Overall p(95) was 369.3 ms, 7.65 ms lower than A2's 376.95 ms, despite the higher request rate. The small difference in these separate runs does not show a clear slowdown at 5 VUs. The HTML dashboard is in `reports/a3-stress.html`.
 
 Step A4: All thresholds passed, and no requests or checks failed. The spike began at 30 seconds, reached 5 VUs at 35 seconds, and returned to 1 VU at 70 seconds. In the dashboard's 10-second windows, overall p(95) was about 305-355 ms before the spike, around 355-370 ms while at 5 VUs, and about 405 ms in the 70-80 second window. It was 304 ms in the 80-90 second window, so the response time returned to its earlier range within about 20 seconds after the drop to 1 VU. These short-window values vary, so this is an approximate recovery time. The HTML dashboard is in `reports/a4-spike.html`.
+
+Step A5: All thresholds passed. The run completed 212 journeys, 636 requests, and 848 checks with no failed requests or checks. For a like-for-like comparison at 2 VUs, the mean of the dashboard's 10-second p(95) values was 368.28 ms in the early 30-150 second interval and 372.14 ms in the late 510-630 second interval. This 3.86 ms difference is small, with no clear degradation over the 10-minute hold and no increase in the error rate. The HTML dashboard is in `reports/a5-soak.html`.
